@@ -51,7 +51,7 @@ pipeline {
                     withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'EKS-1', contextName: '', credentialsId: CREDENTIALS_ID_K8S, namespace: KUBERNETES_NAMESPACE, serverUrl: KUBERNETES_CLUSTER]]) {
                         for (service in services) {
                             sh """
-                            kubectl set image deployment/${service}-deployment ${service}=${DOCKER_REGISTRY}/${service}:${BUILD_NUMBER} -n $KUBERNETES_NAMESPACE
+                            kubectl set image deployment/${service} ${service}=${DOCKER_REGISTRY}/${service}:${BUILD_NUMBER} -n $KUBERNETES_NAMESPACE
                             """
                         }
                     }
