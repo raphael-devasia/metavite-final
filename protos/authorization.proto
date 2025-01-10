@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package verify;
+
+service VerificationService {
+
+
+}
+
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message User {
+  string _id = 1;
+  string email = 2;
+  string username = 3;
+  string role = 4;
+  Name name = 5; 
+  string companyRefId = 6;
+  PersonalDetails personalDetails = 7; // Nested PersonalDetails message
+  companyDetails companyDetails = 8;
+  string password = 9;
+}
+
+message LoginResponse {
+  User user = 1;
+  string token = 2;
+  string message = 3;
+  bool success = 4;
+}
+
+message Name {
+  string firstName = 1;
+  string lastName = 2;
+}
+
+message PersonalDetails {
+  Address address = 1; // Nested Address message
+  EmergencyContact emergencyContact = 2; // Nested EmergencyContact message
+}
+message companyDetails {
+  string companyName = 1;
+  string companyEmail = 2;
+  string companyPhone = 3;
+  string taxId = 4;
+
+
+
+  Address address = 5; // Nested Address message
+  
+}
+
+
+message Address {
+  string addressLine1 = 1;
+  string addressLine2 = 2;
+  string city = 3;
+  string state = 4;
+  string postalCode = 5;
+}
+
+message EmergencyContact {
+  string name = 1;
+  string phoneNumber = 2;
+}
+

@@ -1,0 +1,77 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: security-service
+  labels:
+    app: security-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: security-service
+  template:
+    metadata:
+      labels:
+        app: security-service
+    spec:
+     
+      containers:
+      - name: security-service
+        image: jaydee47/metavite_security:0.0.26.RELEASE
+        ports:
+        - containerPort: 3005
+        env:
+        
+       
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: security-service-mongo-config
+              key: MONGO_URI
+          # value: mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@$(MONGO_HOST):$(MONGO_PORT)/$(MONGO_DB)?authSource=admin
+
+        - name: JWT_SECRET
+          value: '9074297611'
+          # RabbitMQ Configuration
+        - name: RABBITMQ_HOST
+          # value: "10.244.0.6"
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: rabbitmq-host
+        - name: RABBITMQ_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: rabbitmq-port
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-user
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-password
+        - name: RABBITMQ_URI
+          value: amqp://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST):$(RABBITMQ_PORT)
+
+
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: security-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3005
+      targetPort: 3005
+      protocol: TCP
+  selector:
+    app: security-service
+

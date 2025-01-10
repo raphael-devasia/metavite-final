@@ -1,0 +1,260 @@
+
+import "google/protobuf/struct.proto";
+syntax = "proto3";
+
+package payment;
+
+service PaymentService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc VerifyPayment(VerifyPaymentRequest) returns (VerifyPaymentResponse);
+  rpc ReleasePayment(ReleasePaymentRequest) returns (ReleasePaymentResponse);
+  rpc GetAllPayments(Empty) returns (PaymentFullResponse);
+   rpc GetPayment(UserId) returns (PaymentResponse);
+  
+
+  
+}
+
+message Empty {}
+message UserId {
+  string id = 1;
+}
+message CreateOrderRequest {
+  double amount = 1;
+
+ 
+  string loadId = 2;
+  string shipperId = 3;
+  string carrierId = 4;
+}
+
+message CreateOrderResponse {
+  string message = 1;
+  bool success = 2;
+  OrderData orderData=3;
+  
+}
+message OrderData {
+  string _id = 1;        // The unique ID of the order
+  int32 amount = 2;          // The amount of the order in the smallest currency unit (e.g., paise for INR)
+  string currency = 3;       // The currency of the payment (e.g., "INR")
+  string receipt = 4;        // The receipt ID associated with the order
+  string loadId = 5;         // The load ID associated with the order
+  string status = 6;         // The status of the order (e.g., "Pending", "Completed", "Failed")
+  string createdAt = 7;      // The timestamp when the order was created
+  string updatedAt = 8;      // The timestamp when the order was last updated
+  string platformFee = 9;
+}
+
+
+message VerifyPaymentRequest {
+  string razorpay_order_id = 1;
+  string razorpay_payment_id = 2;
+  string razorpay_signature = 3;
+  string loadId = 4;
+}
+
+message VerifyPaymentResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ReleasePaymentRequest {
+  string loadId = 1;
+}
+
+message ReleasePaymentResponse {
+  string message = 1;
+}
+
+message PaymentResponse {
+  bool success = 1;
+   EnrichedPayment payments = 2;
+  string message = 3;
+}
+
+message PaymentFullResponse {
+  bool success = 1;
+  repeated EnrichedPayment payments = 2;
+  string message = 3;
+}
+
+message EnrichedPayment {
+  string id = 1;
+  int64 amount = 2;
+  string currency = 3;
+  string receipt = 4;
+  string loadId = 5;
+  string shipperId = 6;
+  string carrierId = 7;
+  string status = 8;
+  string createdAt = 9;
+  string updatedAt = 10;
+  LoadDetails loadDetails = 11;
+  CarrierDetails carrierDetails = 12;
+  ShipperDetails shipperDetails = 13;
+   string platformFee = 14;
+}
+
+message LoadDetails {
+  repeated Bid bids = 1;
+  string agentContact = 2;
+  string agentName = 3;
+  string appointment1 = 4;
+  int32 basePrice = 5;
+  Location dropoff1 = 6;
+  Location pickupLocation = 7;
+  string dispatchDateTime = 8;
+  int32 dropoffs = 9;
+  string expectedDelivery = 10;
+  string material = 11;
+  int32 quantity = 12;
+  string vehicleBody = 13;
+  string vehicleType = 14;
+  string shipperRefId = 15;
+  string status = 16;
+  string selectedBid = 17;
+  SelectedBidDetails selectedBidDetails = 18;
+  string bidCarrier = 19;
+  string lowestPrice = 20;
+  string assignedDriver = 21;
+  string loadId = 22;
+}
+
+message Bid {
+  string vehicle = 1;
+  string driver = 2;
+  int32 bid = 3;
+  bool termsAccepted = 4;
+  string loadRefId = 5;
+  string companyName = 6;
+  string companyPhone = 7;
+  string firstName = 8;
+  string lastName = 9;
+  string companyRefId = 10;
+  string id = 11;
+}
+
+message Location {
+  string companyRefId = 1;
+  string companyName = 2;
+  Address address = 3;
+  string contactPerson = 4;
+  string contactNumber = 5;
+}
+
+message Address {
+  string addressLine1 = 1;
+  string addressLine2 = 2;
+  string city = 3;
+  string state = 4;
+  string postalCode = 5;
+}
+
+message SelectedBidDetails {
+  Bid bid = 1;
+  CompanyDetails companyDetails = 2;
+  DriverDetails driverDetails = 3;
+  TruckDetails truckDetails = 4;
+}
+
+message CompanyDetails {
+  string companyName = 1;
+  string companyEmail = 2;
+  string companyPhone = 3;
+  string taxId = 4;
+  Address address = 5;
+}
+
+message DriverDetails {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string role = 4;
+  Name name = 5;
+  string companyRefId = 6;
+  PersonalDetails personalDetails = 7;
+  CompanyInfo companyDetails = 8;
+  string status = 9;
+  string driversLicenseNumber = 10;
+  string aadharCardNumber = 11;
+  string accountNumber = 12;
+  string dateOfBirth = 13;
+  string driversLicenseExpiry = 14;
+  string phoneNumber = 15;
+  string ifscCode = 16;
+  string workStatus = 17;
+  bool isBoardingCompleted = 18;
+}
+
+message Name {
+  string firstName = 1;
+  string lastName = 2;
+}
+
+message PersonalDetails {
+  Address address = 1;
+  EmergencyContact emergencyContact = 2;
+}
+
+message EmergencyContact {
+  string name = 1;
+  string phoneNumber = 2;
+}
+
+message CompanyInfo {
+  string id = 1;
+  Name name = 2;
+  string email = 3;
+  string companyRefId = 4;
+  CompanyDetails companyDetails = 5;
+}
+
+message TruckDetails {
+  string companyRefId = 1;
+  string vehicleType = 2;
+  string vehicleRegistrationNumber = 3;
+  string vehicleColor = 4;
+  int32 vehicleWeight = 5;
+  string status = 6;
+  int32 yearOfManufacture = 7;
+  int32 numberOfAxles = 8;
+  string licensePlateNumber = 9;
+  string vehicleInspectionStatus = 10;
+  string makeAndModel = 11;
+  string fuelType = 12;
+  int32 vehicleCapacity = 13;
+  string rcOwnerName = 14;
+  string expiryDate = 15;
+  string insuranceProvider = 16;
+  string policyNumber = 17;
+  string id = 18;
+  string workStatus = 19;
+}
+
+message CarrierDetails {
+  repeated string clients = 1;
+  repeated string pickups = 2;
+  string id = 3;
+  string companyRefId = 4;
+  string email = 5;
+  Name name = 6;
+  CompanyDetails companyDetails = 7;
+  string status = 8;
+}
+
+message ShipperDetails {
+  repeated string clients = 1;
+  repeated string pickups = 2;
+  string id = 3;
+  string companyRefId = 4;
+  string email = 5;
+  Name name = 6;
+  Address address = 7;
+  PersonalDetails personalDetails = 8;
+  CompanyDetails companyDetails = 9;
+  string status = 10;
+}
+
+
+

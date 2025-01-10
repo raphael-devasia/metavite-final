@@ -1,0 +1,179 @@
+
+
+syntax = "proto3";
+
+package shipper;
+
+service ShipperService {
+  // Get information about a shipper
+  rpc GetShipperInfo (ShipperInfoRequest) returns (ShipperInfoResponse);
+ 
+  // Get information about a shipper
+  rpc RegisterNewClient (ClientInfoRequest) returns (ClientInfoResponse);
+  rpc RegisterNewPickup (ClientInfoRequest) returns (ClientInfoResponse);
+  
+
+  // Get a list of all shippers
+  rpc GetAllShippers (Empty) returns (ShipperListResponse);
+
+
+  rpc GetAllShipperClients (UserId) returns (AllClientInfoResponse);
+  rpc GetAllShipperPickUps (UserId) returns (AllClientInfoResponse);
+  rpc GetClientInfo (UserId) returns (ClientDetailsResponse);
+  rpc GetPickupInfo (UserId) returns (ClientDetailsResponse);
+
+  // Get a list of all staffs
+  rpc GetAllStaffs (Empty) returns (StaffListResponse);
+
+  // Get a list of all bids
+  rpc GetAllBids (Empty) returns (BidListResponse);
+
+  // Get a list of all shipments
+  rpc GetAllShipments (Empty) returns (ShipmentListResponse);
+  rpc DeleteUserResource (DeleteRequest) returns (ClientDetailsResponse);
+  
+}
+
+// Request for GetShipperInfo
+message ShipperInfoRequest {
+  string companyRefId = 1;
+}
+message DeleteRequest {
+  string id = 1;
+  string target = 2;
+}
+
+// Response for GetShipperInfo
+message ShipperInfoResponse {
+ bool success =  1;
+  Company user = 2;
+  string message= 3;
+}
+
+// Empty message for requesting lists of entities (Shippers, Staffs, etc.)
+message Empty {}
+message UserId {
+  string id = 1;
+}
+// Response containing a list of shippers
+message ShipperListResponse {
+  repeated ShipperInfoResponse shippers = 1;
+}
+
+// Response containing a list of staffs
+message StaffListResponse {
+  repeated StaffInfoResponse staffs = 1;
+}
+
+// Staff information structure
+message StaffInfoResponse {
+  string staffId = 1;
+  string name = 2;
+  string position = 3;
+  string email = 4;
+}
+message Address {
+  string addressLine1 = 1;
+  string addressLine2 = 2;
+  string city = 3;
+  string state = 4;
+  string postalCode = 5;
+}
+
+
+// Response containing a list of bids
+message BidListResponse {
+  repeated BidInfoResponse bids = 1;
+}
+
+// Bid information structure
+message BidInfoResponse {
+  string bidId = 1;
+  string description = 2;
+  string status = 3;
+}
+
+// Response containing a list of shipments
+message ShipmentListResponse {
+  repeated ShipmentInfoResponse shipments = 1;
+}
+
+// Shipment information structure
+message ShipmentInfoResponse {
+  string shipmentId = 1;
+  string origin = 2;
+  string destination = 3;
+  string status = 4;
+  string estimatedArrival = 5;
+}
+message ClientInfoRequest {
+   string companyRefId = 1;
+   string companyName = 2;
+   Address address = 3;
+   string contactPerson = 4;
+   string contactNumber= 5;
+   string _id = 6;
+}
+
+
+message ClientInfoResponse {
+  bool success =  1;
+  string data = 2;
+  string message= 3;
+}
+message UserAddressInfo {
+  
+  string companyRefId = 1;
+   string companyName = 2;
+   Address address = 3;
+   string contactPerson = 4;
+   string contactNumber= 5;
+   string _id = 6;
+}
+
+message AllClientInfoResponse{
+   bool success =  1;
+  repeated UserAddressInfo addresses = 2;
+  string message= 3;
+}
+message ClientDetailsResponse{
+   bool success =  1;
+   UserAddressInfo addresses = 2;
+  string message= 3;
+}
+// message ShipperInfoResponse {
+//    optional string _id = 1;
+//    string companyRefId = 2;
+//    string companyName = 3;
+// }
+
+ message EmergencyContact { 
+  string name = 1; 
+  string phoneNumber = 2;
+ } 
+ message CompanyDetails { 
+string companyName = 1; 
+string companyEmail = 2; 
+string companyPhone = 3; 
+string taxId = 4; 
+Address address = 5;
+}  
+message Company { 
+string _id = 1; 
+string companyRefId = 2; 
+string email = 3; 
+Name name = 4; 
+Address address = 5;
+PersonalDetails personalDetails = 6; 
+CompanyDetails companyDetails = 7; 
+repeated string clients = 8; 
+repeated string pickups = 9; 
+string status = 10; 
+} 
+message Name { 
+string firstName = 1; 
+string lastName = 2; 
+} 
+message PersonalDetails { 
+EmergencyContact emergencyContact = 1; 
+}

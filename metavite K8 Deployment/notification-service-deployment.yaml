@@ -1,0 +1,81 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  labels:
+     app: notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      
+      containers:
+      - name: notification-service
+        image: jaydee47/metavite_notifications:0.0.0.RELEASE
+        ports:
+        - containerPort: 4008
+        env:
+        - name: EMAIL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: email-user
+        - name: EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: EMAIL_PASSWORD
+        
+
+        
+        
+
+         # RabbitMQ Configuration
+        - name: RABBITMQ_HOST
+          # value: "10.244.0.6"
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: rabbitmq-host
+        - name: RABBITMQ_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: rabbitmq-port
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-user
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-password
+        - name: RABBITMQ_URI
+          value: amqp://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST):$(RABBITMQ_PORT)
+
+
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4008
+      targetPort: 4008
+      protocol: TCP
+  selector:
+    app: notification-service
+

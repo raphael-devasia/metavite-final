@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+        - containerPort: 5672
+        - containerPort: 15672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  ports:
+    - name: rabbitmq-port   # Port name for the AMQP protocol
+      port: 5672            # Default RabbitMQ port for communication
+      targetPort: 5672
+    - name: rabbitmq-mgmt   # Port name for the management plugin
+      port: 15672           # Default RabbitMQ management plugin port
+      targetPort: 15672
+  selector:
+    app: rabbitmq

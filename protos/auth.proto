@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
+
+  rpc InvitationRegister (InvitationRegisterRequest) returns (InvitationRegisterResponse);
+  rpc ValidateRegister (InvitationRegisterRequest) returns (InvitationValidationResult);
+  rpc RoleAuthorization(checkAuthorizationRequest) returns (checkAuthorizationResponse);
+  
+}
+
+message RegisterRequest {
+  User user = 1; // Use User message to closely mirror the IUser structure
+  string token = 2; // Keep token as a separate field
+}
+
+message RegisterResponse {
+  string firstName = 1;
+  string message = 2;
+  bool success = 3;
+  User user = 4;
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message User {
+  string _id = 1;
+  string email = 2;
+  string username = 3;
+  string role = 4;
+  Name name = 5; // Nested Name message
+  string companyRefId = 6;
+  PersonalDetails personalDetails = 7; // Nested PersonalDetails message
+  companyDetails companyDetails = 8;
+  string password = 9;
+}
+
+message LoginResponse {
+  User user = 1;
+  string token = 2;
+  string message = 3;
+  bool success = 4;
+}
+
+message Name {
+  string firstName = 1;
+  string lastName = 2;
+}
+
+message PersonalDetails {
+  Address address = 1; // Nested Address message
+  EmergencyContact emergencyContact = 2; // Nested EmergencyContact message
+}
+message companyDetails {
+  string companyName = 1;
+  string companyEmail = 2;
+  string companyPhone = 3;
+  string taxId = 4;
+
+
+
+  Address address = 5; // Nested Address message
+  
+}
+
+
+message Address {
+  string addressLine1 = 1;
+  string addressLine2 = 2;
+  string city = 3;
+  string state = 4;
+  string postalCode = 5;
+}
+
+message EmergencyContact {
+  string name = 1;
+  string phoneNumber = 2;
+}
+message InvitationUser {
+ Name name = 1; 
+ string phoneNumber = 2;
+  string email = 3;
+  string token = 4;
+ string companyRefId = 5;
+
+}
+
+message InvitationRegisterRequest {
+InvitationUser user = 1;
+
+}
+message InvitationRegisterResponse {
+  Name name = 1; 
+ string phoneNumber = 2;
+  string email = 3;  
+  string message = 4;
+  bool success = 5;
+}
+message InvitationValidationResult {
+ string message = 1;
+  bool success = 2;
+
+}
+message checkAuthorizationRequest {
+  string token = 1;
+  string feature = 2;
+}
+message checkAuthorizationResponse {
+bool isAuthorized = 1;
+bool success = 2;
+}

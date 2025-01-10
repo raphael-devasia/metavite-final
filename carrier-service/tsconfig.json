@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "CommonJS",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "allowJs": true
+    },
+    "include": [
+        "src/**/*.ts" // Keep existing include pattern for src folder
+        // "auth-intermediary-service/**/*.ts"
+        // Add other source folders here
+    ],
+    "exclude": ["node_modules", "dist"]
+}
