@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     // Update each Kubernetes deployment with the new Docker image
-                    def services = ['gateway', 'auth-service', 'carrier-service', 'load-service', 'notification-service', 'security-service', 'shipper-service']
+                    def services = ['api-gateway', 'auth-service', 'carrier-service', 'load-service', 'notification-service', 'security-service', 'shipper-service']
 
                     withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'EKS-1', contextName: '', credentialsId: CREDENTIALS_ID_K8S, namespace: KUBERNETES_NAMESPACE, serverUrl: KUBERNETES_CLUSTER]]) {
                         for (service in services) {

@@ -31,7 +31,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: gateway
+    app: api-gateway
   ports:
     - protocol: TCP
       port: 4000
