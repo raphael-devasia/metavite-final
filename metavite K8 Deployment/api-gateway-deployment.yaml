@@ -3,22 +3,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway-deployment
+  name: api-gateway
   labels:
-    app: gateway
+    app: api-gateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gateway
+      app: api-gateway
   template:
     metadata:
       labels:
-        app: gateway
+        app: api-gateway
     spec:
       
       containers:
-      - name: gateway
+      - name: api-gateway
         image: jaydee47/metavite_gateway:0.0.2.RELEASE
         ports:
         - containerPort: 4000
@@ -27,7 +27,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gateway-service
+  name: api-gateway
 spec:
   type: NodePort
   selector:

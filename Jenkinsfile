@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Define microservices
-                    def services = ['gateway', 'auth-service', 'carrier-service', 'load-service', 'notification-service', 'security-service', 'shipper-service']
+                    def services = ['api-gateway', 'auth-service', 'carrier-service', 'load-service', 'notification-service', 'security-service', 'shipper-service']
 
                     for (service in services) {
                         echo "Processing ${service}..."
