@@ -19,7 +19,7 @@ spec:
      
       containers:
       - name: security-service
-        image: jaydee47/metavite_security:0.0.26.RELEASE
+        image: jaydee47/security-service:0.0.0.RELEASE
         ports:
         - containerPort: 3005
         env:

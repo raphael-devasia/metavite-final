@@ -19,7 +19,7 @@ spec:
       
       containers:
       - name: notification-service
-        image: jaydee47/metavite_notifications:0.0.0.RELEASE
+        image: jaydee47/notification-service:0.0.0.RELEASE
         ports:
         - containerPort: 4008
         env:

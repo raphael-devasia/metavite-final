@@ -19,7 +19,7 @@ spec:
       
       containers:
       - name: shipper-service
-        image: jaydee47/metavite_shipper:0.0.0.RELEASE
+        image: jaydee47/shipper-service:0.0.0.RELEASE
         ports:
         - containerPort: 3003
         env:

@@ -19,7 +19,7 @@ spec:
       
       containers:
       - name: api-gateway
-        image: jaydee47/metavite_gateway:0.0.2.RELEASE
+        image: jaydee47/api-gateway:0.0.0.RELEASE
         ports:
         - containerPort: 4000
 

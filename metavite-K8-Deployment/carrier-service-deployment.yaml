@@ -19,7 +19,7 @@ spec:
       
       containers:
       - name: carrier-service
-        image: jaydee47/metavite_carrier:0.0.1.RELEASE
+        image: jaydee47/carrier-service:0.0.0.RELEASE
         ports:
         - containerPort: 3002
         env:

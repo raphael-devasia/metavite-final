@@ -19,7 +19,7 @@ spec:
       
       containers:
       - name: load-service
-        image: jaydee47/metavite_load:0.0.0.RELEASE
+        image: jaydee47/load-service:0.0.0.RELEASE
         ports:
         - containerPort: 3007
         env:

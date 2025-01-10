@@ -7,6 +7,7 @@ pipeline {
         CREDENTIALS_ID_DOCKER = 'docker-cred'
         CREDENTIALS_ID_GITHUB = 'git-cred'
         CREDENTIALS_ID_K8S = 'k8-token'
+        IMAGE_TAG = '0.0.0.RELEASE'
     }
     stages {
         stage('Checkout Code') {
@@ -23,9 +24,9 @@ pipeline {
                         dir(service) {
                             withCredentials([usernamePassword(credentialsId: CREDENTIALS_ID_DOCKER, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                                 sh """
-                                docker build -t ${DOCKER_REGISTRY}/${service}:${BUILD_NUMBER} .
+                                docker build -t ${DOCKER_REGISTRY}/${service}:${IMAGE_TAG} .
                                 docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
-                                docker push ${DOCKER_REGISTRY}/${service}:${BUILD_NUMBER}
+                                docker push ${DOCKER_REGISTRY}/${service}:${IMAGE_TAG}
                                 """
                             }
                         }
@@ -33,6 +34,10 @@ pipeline {
                 }
             }
         }
+
+       
+
+
         stage('Deploy to Kubernetes') {
             steps {
                 script {
@@ -40,31 +45,10 @@ pipeline {
                         // Create namespace if it doesn't exist
                         sh "kubectl create namespace ${KUBERNETES_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -"
                         
-                        // Apply RabbitMQ resources first
+                        // Apply all YAML files from the metavite-K8-Deployment folder
                         sh """
-                        kubectl apply -f metavite-K8-Deployment/rabbitmq-config.yaml -n ${KUBERNETES_NAMESPACE}
-                        kubectl apply -f metavite-K8-Deployment/rabbitmq-secret.yaml -n ${KUBERNETES_NAMESPACE}
-                        kubectl apply -f metavite-K8-Deployment/rabbitmq-service.yaml -n ${KUBERNETES_NAMESPACE}
+                        kubectl apply -f metavite-K8-Deployment/ -n ${KUBERNETES_NAMESPACE}
                         """
-                        
-                        // Apply MongoDB configs
-                        sh """
-                        kubectl apply -f metavite-K8-Deployment/mongo-config-auth.yaml -n ${KUBERNETES_NAMESPACE}
-                        kubectl apply -f metavite-K8-Deployment/mongo-config-carrier.yaml -n ${KUBERNETES_NAMESPACE}
-                        kubectl apply -f metavite-K8-Deployment/mongo-config-load.yaml -n ${KUBERNETES_NAMESPACE}
-                        kubectl apply -f metavite-K8-Deployment/mongo-config-security.yaml -n ${KUBERNETES_NAMESPACE}
-                        kubectl apply -f metavite-K8-Deployment/mongo-config-shipper.yaml -n ${KUBERNETES_NAMESPACE}
-                        """
-                        
-                        // Apply service deployments with updated image tags
-                        def services = ['api-gateway', 'auth-service', 'carrier-service', 'load-service', 'notification-service', 'security-service', 'shipper-service']
-                        for (service in services) {
-                            // Read the deployment file and update the image
-                            sh """
-                            sed -i 's|image: ${DOCKER_REGISTRY}/${service}:[0-9.]*RELEASE|image: ${DOCKER_REGISTRY}/${service}:${BUILD_NUMBER}|g' metavite-K8-Deployment/${service}-deployment.yaml
-                            kubectl apply -f metavite-K8-Deployment/${service}-deployment.yaml -n ${KUBERNETES_NAMESPACE}
-                            """
-                        }
                     }
                 }
             }

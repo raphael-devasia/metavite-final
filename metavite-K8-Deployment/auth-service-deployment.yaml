@@ -19,7 +19,7 @@ spec:
       
       containers:
       - name: auth
-        image: jaydee47/authentication:0.0.7.RELEASE
+        image: jaydee47/auth-service:0.0.0.RELEASE
         ports:
         - containerPort: 3001
         env:
