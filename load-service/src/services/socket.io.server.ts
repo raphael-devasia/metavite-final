@@ -6,7 +6,7 @@ const cors = require("cors")
 const app = express()
 app.use(
     cors({
-        origin: "http://localhost:4200", // Allow frontend from localhost:4200
+        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Allow frontend from localhost:4200
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"],
         credentials: true,
@@ -17,7 +17,7 @@ const server = http.createServer(app) // Create an HTTP server instead of HTTPS
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:4200", // Allow frontend from localhost:4200
+        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Allow frontend from localhost:4200
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"],
         credentials: true,

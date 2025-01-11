@@ -19,7 +19,7 @@ app.use(express.json())
 
 app.use(
     cors({
-        origin: "http://localhost:4200", // Replace this with your frontend's URL
+        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Replace this with your frontend's URL
         methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods if needed
         credentials: true, // Enable if you need cookies
     })
