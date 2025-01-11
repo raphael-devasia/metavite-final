@@ -20,8 +20,8 @@ app.use(express.json())
 app.use(
     cors({
         origin: [
-            "https://meta-vite-front-end-qbvz.vercel.app", // Allow Vercel front-end
-            "http://localhost:4200", // Allow local Angular front-end
+            "https://metavite.vercel.app/", // Allow Vercel front-end
+            "http://localhost:4200/", // Allow local Angular front-end
         ],
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
         allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
