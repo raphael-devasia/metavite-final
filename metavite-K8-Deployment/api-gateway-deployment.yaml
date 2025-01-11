@@ -36,5 +36,5 @@ spec:
     - protocol: TCP
       port: 4000
       targetPort: 4000
-      # nodePort: 30012
-  type: LoadBalancer
+      nodePort: 30012
+  # type: LoadBalancer
