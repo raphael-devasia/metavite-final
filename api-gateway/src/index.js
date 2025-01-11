@@ -20,8 +20,9 @@ app.use(morgan("combined"));
 app.use(express_1.default.json());
 app.use(cors({
     origin: "http://localhost:4200", // Replace this with your frontend's URL
-    methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods if needed
-    credentials: true, // Enable if you need cookies
+     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
+        credentials: true, // Allow cookies (optional)
 }));
 app.use(bodyParser.json());
 //THIS SECTION IS FOR THE ROUTES RELATED TO DIFFERENT SERVICES
