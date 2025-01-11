@@ -19,7 +19,7 @@ app.use(express.json())
 
 app.use(
     cors({
-        origin: "*", // Allow any origin
+        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Allow any origin
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
         allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
         credentials: true, // Allow cookies (optional)
