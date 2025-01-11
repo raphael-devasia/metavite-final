@@ -28,7 +28,7 @@ const Message = require("./infrastructure/database/models/MessageModel");
 dotenv.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: "http://localhost:4200", // Replace this with your frontend's URL
+    origin: "https://meta-vite-front-end-qbvz.vercel.app", // Replace this with your frontend's URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods if needed
     credentials: true, // Enable if you need cookies
 }));
@@ -44,7 +44,7 @@ const server = http.createServer(app);
 // Initialize Socket.IO server with CORS
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "http://localhost:4200", // Allow frontend origin
+        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Allow frontend origin
         methods: ["GET", "POST"], // Allowed methods
         credentials: true, // Send cookies or authentication headers
     },
