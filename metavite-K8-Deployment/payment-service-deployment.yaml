@@ -1,107 +1,98 @@
-
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: payment-service
-  namespace: metavite
-  labels:
-     app: payment-service
+    name: payments-service
+    namespace: metavite
+    labels:
+        app: payments-service
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: payment-service
-  template:
-    metadata:
-      labels:
-        app: payment-service
-    spec:
-      
-      containers:
-      - name: payment-service
-        image: jaydee47/payment-service:0.0.0.RELEASE
-        ports:
-        - containerPort: 3009
-        env:
-        
+    replicas: 1
+    selector:
+        matchLabels:
+            app: payments-service
+    template:
+        metadata:
+            labels:
+                app: payments-service
+        spec:
+            containers:
+                - name: payments-service
+                  image: jaydee47/payments-service:0.0.0.RELEASE
+                  ports:
+                      - containerPort: 3009
+                  env:
+                      - name: MONGO_URI
+                        valueFrom:
+                            configMapKeyRef:
+                                name: payments-service-mongo-config
+                                key: MONGO_URI
 
-        
-        - name: MONGO_URI
-          valueFrom:
-            configMapKeyRef:
-              name: payment-service-mongo-config
-              key: MONGO_URI
-          
-        - name: JWT_SECRET
-          value: '9074297611'
+                      - name: JWT_SECRET
+                        value: "9074297611"
 
-         # RabbitMQ Configuration
-        - name: RABBITMQ_HOST
-          # value: "10.244.0.6"
-          valueFrom:
-            configMapKeyRef:
-              name: rabbitmq-config
-              key: rabbitmq-host
-        - name: RABBITMQ_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: rabbitmq-config
-              key: rabbitmq-port
-        - name: RABBITMQ_USER
-          valueFrom:
-            secretKeyRef:
-              name: rabbitmq-secret
-              key: rabbitmq-user
-        - name: RABBITMQ_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: rabbitmq-secret
-              key: rabbitmq-password
-        - name: RABBITMQ_URI
-          value: amqp://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST):$(RABBITMQ_PORT)
+                        # RabbitMQ Configuration
+                      - name: RABBITMQ_HOST
+                        # value: "10.244.0.6"
+                        valueFrom:
+                            configMapKeyRef:
+                                name: rabbitmq-config
+                                key: rabbitmq-host
+                      - name: RABBITMQ_PORT
+                        valueFrom:
+                            configMapKeyRef:
+                                name: rabbitmq-config
+                                key: rabbitmq-port
+                      - name: RABBITMQ_USER
+                        valueFrom:
+                            secretKeyRef:
+                                name: rabbitmq-secret
+                                key: rabbitmq-user
+                      - name: RABBITMQ_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                name: rabbitmq-secret
+                                key: rabbitmq-password
+                      - name: RABBITMQ_URI
+                        value: amqp://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST):$(RABBITMQ_PORT)
 
-        # Razorpay Configuration
-        - name: RAZORPAY_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: rabbitmq-secret
-              key: RAZORPAY_KEY_ID
-        - name: RAZORPAY_KEY_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: rabbitmq-secret
-              key: RAZORPAY_KEY_SECRET
-        - name: RAZORPAY_X_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: rabbitmq-secret
-              key: RAZORPAY_X_KEY_ID
-        - name: RAZORPAY_X_KEY_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: rabbitmq-secret
-              key: RAZORPAY_X_KEY_SECRET
-        - name: RAZORPAY_VIRTUAL_ACCOUNT_NUMBER
-          valueFrom:
-            secretKeyRef:
-              name: rabbitmq-secret
-              key: RAZORPAY_VIRTUAL_ACCOUNT_NUMBER
+                      # Razorpay Configuration
+                      - name: RAZORPAY_KEY_ID
+                        valueFrom:
+                            secretKeyRef:
+                                name: rabbitmq-secret
+                                key: RAZORPAY_KEY_ID
+                      - name: RAZORPAY_KEY_SECRET
+                        valueFrom:
+                            secretKeyRef:
+                                name: rabbitmq-secret
+                                key: RAZORPAY_KEY_SECRET
+                      - name: RAZORPAY_X_KEY_ID
+                        valueFrom:
+                            secretKeyRef:
+                                name: rabbitmq-secret
+                                key: RAZORPAY_X_KEY_ID
+                      - name: RAZORPAY_X_KEY_SECRET
+                        valueFrom:
+                            secretKeyRef:
+                                name: rabbitmq-secret
+                                key: RAZORPAY_X_KEY_SECRET
+                      - name: RAZORPAY_VIRTUAL_ACCOUNT_NUMBER
+                        valueFrom:
+                            secretKeyRef:
+                                name: rabbitmq-secret
+                                key: RAZORPAY_VIRTUAL_ACCOUNT_NUMBER
 
-
-        
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: payment-service
-  namespace: metavite
+    name: payments-service
+    namespace: metavite
 spec:
-  type: ClusterIP
-  ports:
-    - port: 3009
-      targetPort: 3009
-      protocol: TCP
-  selector:
-    app: payment-service
-
+    type: ClusterIP
+    ports:
+        - port: 3009
+          targetPort: 3009
+          protocol: TCP
+    selector:
+        app: payments-service

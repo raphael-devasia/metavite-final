@@ -3,8 +3,6 @@ const grpc = require("@grpc/grpc-js")
 const protoLoader = require("@grpc/proto-loader")
 import path from "path"
 
-
-
 const LOAD_PROTO_PATH = path.join("/app/metaVite_Proto_Files/payment.proto")
 const packageDefinition = protoLoader.loadSync(LOAD_PROTO_PATH, {
     keepCase: true,
@@ -25,17 +23,14 @@ const paymentProto = grpc.loadPackageDefinition(packageDefinition).payment
 //     grpc.credentials.createInsecure()
 // )
 const payment_client = new (paymentProto as any).PaymentService(
-    "payment-service:3009",
+    "payments-service:3009",
     grpc.credentials.createInsecure()
 )
 
-
-
 export const newPaymentMethod = (paymentData: any): Promise<any | null> => {
     return new Promise((resolve, reject) => {
-        
-const {amount,loadId,shipperId,carrierId} = paymentData
-console.log('final data is',amount,loadId);
+        const { amount, loadId, shipperId, carrierId } = paymentData
+        console.log("final data is", amount, loadId)
 
         payment_client.CreateOrder(
             { amount, loadId, shipperId, carrierId },
@@ -82,15 +77,15 @@ export const verifyPaymentMethod = (paymentData: any): Promise<any | null> => {
     })
 }
 export const fetchAllPayments = (): Promise<any> => {
-    console.log('reaching here too');
-    
+    console.log("reaching here too")
+
     return new Promise((resolve, reject) => {
         payment_client.GetAllPayments({}, (error: any, response: any) => {
             if (error) {
                 reject(error)
             } else {
-                console.log('the data which i am getting is ',response);
-                
+                console.log("the data which i am getting is ", response)
+
                 resolve(response)
             }
         })
@@ -110,4 +105,3 @@ export const fetchPayment = (id: string): Promise<any> => {
         })
     })
 }
-
