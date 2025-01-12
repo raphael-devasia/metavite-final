@@ -5,6 +5,7 @@ metadata:
   namespace: metavite
   annotations:
     nginx.ingress.kubernetes.io/enable-websocket: "true"  # Enable WebSocket support
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Enforce HTTPS
 spec:
   ingressClassName: nginx
   rules:
@@ -25,3 +26,7 @@ spec:
             name: load-service
             port:
               number: 5001
+  tls:
+  - hosts:
+    - metavite.ddns.net
+    secretName: metavite-tls-secret  # Secret containing the TLS certificate
