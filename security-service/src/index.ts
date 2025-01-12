@@ -4,4 +4,3 @@ import "./services/grpc-server"
 
 dotenv.config()
 startServer()
-// 
