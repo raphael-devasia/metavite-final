@@ -75,7 +75,7 @@ export const verifyPaymentMethod = (paymentData: any): Promise<any | null> => {
             }
         )
     })
-}
+} 
 export const fetchAllPayments = (): Promise<any> => {
     console.log("reaching here too")
 

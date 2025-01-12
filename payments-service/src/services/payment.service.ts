@@ -77,6 +77,8 @@ class PaymentService {
     static async getAllPayments(call: any, callback: any) {
         try {
             console.log('get all payment details');
+            console.log('check again');
+            
             
             const result = await PaymentRepository.getAllPayments()
 
