@@ -20,6 +20,7 @@ app.use(
             "https://metavite.vercel.app",
             "http://localhost:4200",
             "https://magnificent-gumption-08c1cb.netlify.app",
+            "wss://metavite.ddns.net",
         ],
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: [
@@ -40,7 +41,7 @@ app.options("*", cors())
 const server = http.createServer(app) 
 // Initialize Socket.IO server with CORS
 const io = new Server(server, {
-    path: "/socket.io",
+    path: "/socketiochat/socket.io",
     cors: {
         origin: [
             "https://metavite.vercel.app", // Allow Vercel front-end
