@@ -2,8 +2,8 @@ pipeline {
     agent any
     environment {
         DOCKER_REGISTRY = 'jaydee47'
-        KUBERNETES_CLUSTER = 'https://C104044B04F53C9D9BCA6D442E977AA5.gr7.eu-north-1.eks.amazonaws.com'
-        KUBERNETES_NAMESPACE = 'webapps'
+        KUBERNETES_CLUSTER = 'https://817F6CC0892FECB991BC947AF9E92871.gr7.eu-north-1.eks.amazonaws.com'
+        KUBERNETES_NAMESPACE = 'metavite'
         CREDENTIALS_ID_DOCKER = 'docker-cred'
         CREDENTIALS_ID_GITHUB = 'git-cred'
         CREDENTIALS_ID_K8S = 'k8-token'
