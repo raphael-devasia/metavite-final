@@ -16,7 +16,13 @@ dotenv.config()
 const app = express()
 app.use(
     cors({
-        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Frontend URL
+        origin: [
+            "https://metavite.vercel.app/", // Allow Vercel front-end
+            "http://localhost:4200/",
+            "https://magnificent-gumption-08c1cb.netlify.app/",
+            // // Allow local Angular front-end
+        ],
+        //  // Frontend URL
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Include OPTIONS method
         allowedHeaders: ["Content-Type"], // Allow the Content-Type header
         credentials: true, // Enable credentials if you're using cookies or authentication
@@ -36,7 +42,12 @@ const server = http.createServer(app)
 // Initialize Socket.IO server with CORS
 const io = new Server(server, {
     cors: {
-        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Allow frontend origin
+        origin: [
+            "https://metavite.vercel.app/", // Allow Vercel front-end
+            "http://localhost:4200/",
+            "https://magnificent-gumption-08c1cb.netlify.app/",
+            // // Allow local Angular front-end
+        ], // Allow frontend origin
         methods: ["GET", "POST"], // Allowed methods
         credentials: true, // Send cookies or authentication headers
     },

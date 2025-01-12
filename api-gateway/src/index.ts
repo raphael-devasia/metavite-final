@@ -21,7 +21,9 @@ app.use(
     cors({
         origin: [
             "https://metavite.vercel.app/", // Allow Vercel front-end
-            "http://localhost:4200/", // Allow local Angular front-end
+            "http://localhost:4200/",
+            "https://magnificent-gumption-08c1cb.netlify.app/",
+            // // Allow local Angular front-end
         ],
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
         allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers

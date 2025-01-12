@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: security-service
+  namespace: metavite
   labels:
     app: security-service
 spec:
@@ -66,6 +67,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: security-service
+  namespace: metavite
 spec:
   type: ClusterIP
   ports:

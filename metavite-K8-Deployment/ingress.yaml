@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: metavite-ingress
+  namespace: metavite
+  annotations:
+    nginx.ingress.kubernetes.io/enable-websocket: "true"  # Enable WebSocket support
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: metavite.duckdns.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-gateway
+            port:
+              number: 4000
+      - path: /socketio
+        pathType: Prefix
+        backend:
+          service:
+            name: load-service
+            port:
+              number: 5001

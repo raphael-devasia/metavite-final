@@ -6,10 +6,15 @@ const cors = require("cors")
 const app = express()
 app.use(
     cors({
-        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Allow frontend from localhost:4200
-        methods: ["GET", "POST"],
-        allowedHeaders: ["Content-Type"],
-        credentials: true,
+        origin: [
+            "https://metavite.vercel.app/", // Allow Vercel front-end
+            "http://localhost:4200/",
+            "https://magnificent-gumption-08c1cb.netlify.app/",
+            // // Allow local Angular front-end
+        ], // Allow frontend from localhost:4200
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
+        allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
+        credentials: true, // Allow cookies (optional)
     })
 )
 
@@ -17,10 +22,15 @@ const server = http.createServer(app) // Create an HTTP server instead of HTTPS
 
 const io = new Server(server, {
     cors: {
-        origin: "https://meta-vite-front-end-qbvz.vercel.app", // Allow frontend from localhost:4200
-        methods: ["GET", "POST"],
-        allowedHeaders: ["Content-Type"],
-        credentials: true,
+        origin: [
+            "https://metavite.vercel.app/", // Allow Vercel front-end
+            "http://localhost:4200/",
+            "https://magnificent-gumption-08c1cb.netlify.app/",
+            // // Allow local Angular front-end
+        ], // Allow frontend from localhost:4200
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
+        allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
+        credentials: true, // Allow cookies (optional)
     },
     pingTimeout: 60000,
     pingInterval: 25000,
