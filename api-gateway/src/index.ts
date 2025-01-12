@@ -20,16 +20,17 @@ app.use(express.json())
 app.use(
     cors({
         origin: [
-            "https://metavite.vercel.app/", // Allow Vercel front-end
-            "http://localhost:4200/",
-            "https://magnificent-gumption-08c1cb.netlify.app/",
-            // // Allow local Angular front-end
+            "https://metavite.vercel.app", // Allow Vercel front-end
+            "http://localhost:4200", // Allow local Angular front-end
+            "https://magnificent-gumption-08c1cb.netlify.app", // Allow Netlify front-end
         ],
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
-        allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
-        credentials: true, // Allow cookies (optional)
+        allowedHeaders: ["Content-Type", "Authorization"], // Allow Content-Type and Authorization headers
+        credentials: true, // Enable credentials (e.g., cookies, authentication)
     })
 )
+app.options("*", cors())
+
 
 app.use(bodyParser.json())
 

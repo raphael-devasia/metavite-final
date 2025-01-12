@@ -17,44 +17,43 @@ const app = express()
 app.use(
     cors({
         origin: [
-            "https://metavite.vercel.app/", // Allow Vercel front-end
-            "http://localhost:4200/",
-            "https://magnificent-gumption-08c1cb.netlify.app/",
-            // // Allow local Angular front-end
+            "https://metavite.vercel.app",
+            "http://localhost:4200",
+            "https://magnificent-gumption-08c1cb.netlify.app",
         ],
-        //  // Frontend URL
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Include OPTIONS method
-        allowedHeaders: ["Content-Type"], // Allow the Content-Type header
-        credentials: true, // Enable credentials if you're using cookies or authentication
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: [
+            "Content-Type",
+            "Authorization",
+            "X-Requested-With",
+            "Accept",
+        ],
+        credentials: true,
     })
 )
 
+// Explicitly handle preflight OPTIONS requests
+app.options("*", cors())
 
-// Create HTTPS server
-// const server = https.createServer(
-//     {
-//         key: fs.readFileSync("server.key"),
-//         cert: fs.readFileSync("server.cert"),
-//     },
-//     app
-// )
+
+
 const server = http.createServer(app) 
 // Initialize Socket.IO server with CORS
 const io = new Server(server, {
     cors: {
         origin: [
-            "https://metavite.vercel.app/", // Allow Vercel front-end
-            "http://localhost:4200/",
-            "https://magnificent-gumption-08c1cb.netlify.app/",
-            // // Allow local Angular front-end
-        ], // Allow frontend origin
-        methods: ["GET", "POST"], // Allowed methods
-        credentials: true, // Send cookies or authentication headers
+            "https://metavite.vercel.app", // Allow Vercel front-end
+            "http://localhost:4200", // Allow local Angular front-end
+            "https://magnificent-gumption-08c1cb.netlify.app", // Allow Netlify front-end
+        ], // Allowed origins
+        methods: ["GET", "POST"], // Allowed HTTP methods
+        credentials: true, // Enable sending cookies or authentication headers
     },
-    pingTimeout: 60000,
-    pingInterval: 25000,
-    transports: ["websocket", "polling"],
+    pingTimeout: 60000, // Timeout for inactive connections
+    pingInterval: 25000, // Interval between pings
+    transports: ["websocket", "polling"], // Transport methods
 })
+
 
 // Middleware
 app.use(express.json())
