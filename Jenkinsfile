@@ -18,7 +18,7 @@ pipeline {
         stage('Build and Push Docker Images') {
             steps {
                 script {
-                    def services = ['api-gateway', 'auth-service', 'carrier-service', 'load-service', 'notification-service', 'security-service', 'shipper-service','payments-service']
+                    def services = ['api-gateway', 'auth-service', 'carrier-service', 'load-service', 'notification-service', 'security-service', 'shipper-service','payments-service','chat-service']
                     for (service in services) {
                         echo "Processing ${service}..."
                         dir(service) {
