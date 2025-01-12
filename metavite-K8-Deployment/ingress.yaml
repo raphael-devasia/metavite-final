@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: metavite.duckdns.org
+  - host: metavite.ddns.net
     http:
       paths:
       - path: /
