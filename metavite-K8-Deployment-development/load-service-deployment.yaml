@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-service
+  namespace: metavite
+  labels:
+    app: load-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: load-service
+  template:
+    metadata:
+      labels:
+        app: load-service
+    spec:
+      containers:
+      - name: load-service
+        image: jaydee47/load-service:0.0.0.RELEASE
+        ports:
+        - containerPort: 5001  # Socket.IO
+        - containerPort: 3007  # gRPC
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: load-service-mongo-config
+              key: MONGO_URI
+        - name: JWT_SECRET
+          value: '9074297611'
+        
+        # RabbitMQ Configuration
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: rabbitmq-host
+        - name: RABBITMQ_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: rabbitmq-port
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-user
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-password
+        - name: RABBITMQ_URI
+          value: amqp://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST):$(RABBITMQ_PORT)
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: load-service
+  namespace: metavite
+spec:
+  type: NodePort  # Expose as NodePort to allow external access
+  ports:
+    - port: 5001  # Internal service port
+      targetPort: 5001  # Container port
+      nodePort: 30001  # External port for Socket.IO
+      protocol: TCP
+      name: socketio
+    - port: 3007  # Internal service port
+      targetPort: 3007  # Container port
+      nodePort: 30002  # External port for gRPC
+      protocol: TCP
+      name: grpc
+  selector:
+    app: load-service
