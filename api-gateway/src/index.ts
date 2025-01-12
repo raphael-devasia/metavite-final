@@ -14,22 +14,33 @@ dotenv.config()
 
 const app = express()
 const DEFAULT_PORT = 4000
-app.use(morgan("combined"))
+
+app.use(morgan('dev')); // Using simpler log format
 app.use(express.json())
 
+// CORS configuration with debug logs
 app.use(
     cors({
         origin: [
-            "https://metavite.vercel.app", // Allow Vercel front-end
-            "http://localhost:4200", // Allow local Angular front-end
-            "https://magnificent-gumption-08c1cb.netlify.app", // Allow Netlify front-end
+            'https://metavite.vercel.app', // Allow Vercel front-end
+            'http://localhost:4200', // Allow local Angular front-end
+            'https://magnificent-gumption-08c1cb.netlify.app', // Allow Netlify front-end
         ],
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
-        allowedHeaders: ["Content-Type", "Authorization"], // Allow Content-Type and Authorization headers
-        credentials: true, // Enable credentials (e.g., cookies, authentication)
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: true,
+        preflightContinue: true, // Make sure preflight responses are handled
+        optionsSuccessStatus: 200, // For legacy browser support (like IE)
     })
-)
-app.options("*", cors())
+);
+
+// Log CORS headers and origin for incoming requests
+app.use((req: Request, res: Response, next) => {
+    console.log(`CORS Request - Origin: ${req.get('Origin')}`);
+    console.log(`Request Method: ${req.method}`);
+    console.log(`Request Headers: ${JSON.stringify(req.headers)}`);
+    next();
+});
 
 
 app.use(bodyParser.json())
