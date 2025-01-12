@@ -1,0 +1,45 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: metavite
+  labels:
+    app: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      
+      containers:
+      - name: api-gateway
+        image: jaydee47/api-gateway:0.0.0.RELEASE
+        ports:
+        - containerPort: 4000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+  namespace: metavite
+spec:
+  type: NodePort
+  selector:
+    app: api-gateway
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+      nodePort: 30000  # Choose a node port number (30000-32767)
+
+     
+
+

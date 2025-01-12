@@ -1,0 +1,80 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carrier-service
+  namespace: metavite
+  labels:
+     app: carrier-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carrier-service
+  template:
+    metadata:
+      labels:
+        app: carrier-service
+    spec:
+      
+      containers:
+      - name: carrier-service
+        image: jaydee47/carrier-service:0.0.0.RELEASE
+        ports:
+        - containerPort: 3002
+        env:
+        
+
+        
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: carrier-service-mongo-config
+              key: MONGO_URI
+          
+        - name: JWT_SECRET
+          value: '9074297611'
+
+         # RabbitMQ Configuration
+        - name: RABBITMQ_HOST
+          # value: "10.244.0.6"
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: rabbitmq-host
+        - name: RABBITMQ_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq-config
+              key: rabbitmq-port
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-user
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-password
+        - name: RABBITMQ_URI
+          value: amqp://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST):$(RABBITMQ_PORT)
+
+
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carrier-service
+  namespace: metavite
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3002
+      targetPort: 3002
+      protocol: TCP
+  selector:
+    app: carrier-service
+
