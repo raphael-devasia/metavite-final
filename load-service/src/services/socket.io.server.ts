@@ -14,7 +14,7 @@ app.use(
         ], // Allow frontend from localhost:4200
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow common HTTP methods
         allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
-        credentials: true, // Allow cookies (optional)
+        credentials: true, 
     })
 )
 
