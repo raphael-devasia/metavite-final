@@ -66,7 +66,7 @@ export const registerInvitation = async (
         <p>You are invited to register with us! Please use the following link to complete your registration:</p>
         <p>
             <a 
-                href="http://localhost:4200/carrier/register?token=${encodeURIComponent(
+                href="https://metavite.vercel.app/carrier/register?token=${encodeURIComponent(
                     invitationToken
                 )}&companyRefId=${encodeURIComponent(
                 savedUser.companyRefId
