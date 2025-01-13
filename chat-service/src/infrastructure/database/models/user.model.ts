@@ -16,6 +16,6 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 )
 // Create an explicit index for `_id`
-userSchema.index({ _id: 1 });
+// userSchema.index({ _id: 1 });
 
 module.exports = mongoose.model("User", userSchema)
