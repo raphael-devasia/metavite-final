@@ -42,18 +42,16 @@ app.options("*", cors())
 const server = http.createServer(app) 
 // Initialize Socket.IO server with CORS
 const io = new Server(server, {
-    path: "/chat/socket.io",
+    path: "/socket.io", // Change this to match client configuration
     cors: {
         origin: [
-            "https://metavite.vercel.app", // Allow Vercel front-end
-            "http://localhost:4200", // Allow local Angular front-end
-            "https://magnificent-gumption-08c1cb.netlify.app", // Allow Netlify front-end
-        ], // Allowed origins
-        methods: ["GET", "POST", "OPTIONS"], // Allowed HTTP methods
-        credentials: true, // Enable sending cookies or authentication headers
-        
-    }
-    
+            "https://metavite.vercel.app",
+            "http://localhost:4200",
+            "https://magnificent-gumption-08c1cb.netlify.app",
+        ],
+        methods: ["GET", "POST", "OPTIONS"],
+        credentials: true,
+    },
 })
 
 

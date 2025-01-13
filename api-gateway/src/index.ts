@@ -48,11 +48,14 @@ app.use(bodyParser.json())
 
 //THIS SECTION IS FOR THE ROUTES RELATED TO DIFFERENT SERVICES
 app.use(
-    "/chat/socket.io",
+    "/chat",
     createProxyMiddleware({
         target: "http://chat-service:3000",
-        ws: true, // This ensures WebSocket connections are handled properly
+        ws: true,
         changeOrigin: true,
+        pathRewrite: {
+            "^/chat": "", // Remove /chat prefix when forwarding
+        },
     })
 )
 app.use(authRoutes)
