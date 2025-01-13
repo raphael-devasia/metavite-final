@@ -55,8 +55,7 @@ const io = new Server(server, {
     allowEIO3: true,
     pingTimeout: 60000,
     pingInterval: 25000,
-    upgrade: true,
-    allowUpgrades: true,
+    
 })
 
 
