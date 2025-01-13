@@ -14,6 +14,7 @@ const { getAllUsers } = require("./presentation/user.controller")
 // Load environment variables
 dotenv.config()
 const app = express()
+
 app.use(
     cors({
         origin: [
@@ -36,26 +37,34 @@ app.use(
 // Explicitly handle preflight OPTIONS requests
 app.options("*", cors())
 
-
+app.use("/socketiochat", (req, res, next) => {
+    console.log("Incoming request:", req.path)
+    next()
+})
 
 const server = http.createServer(app) 
 // Initialize Socket.IO server with CORS
 const io = new Server(server, {
-    path: "/socketiochat/socket.io",
+    path: "/socket.io",
     cors: {
         origin: [
             "https://metavite.vercel.app", // Allow Vercel front-end
             "http://localhost:4200", // Allow local Angular front-end
             "https://magnificent-gumption-08c1cb.netlify.app", // Allow Netlify front-end
         ], // Allowed origins
-        methods: ["GET", "POST"], // Allowed HTTP methods
+        methods: ["GET", "POST", "OPTIONS"], // Allowed HTTP methods
         credentials: true, // Enable sending cookies or authentication headers
+        allowedHeaders: [
+            "Content-Type",
+            "Authorization",
+            "X-Requested-With",
+            "Accept",
+        ],
     },
     transports: ["polling", "websocket"],
     allowEIO3: true,
     pingTimeout: 60000,
     pingInterval: 25000,
-    
 })
 
 
