@@ -51,9 +51,12 @@ const io = new Server(server, {
         methods: ["GET", "POST"], // Allowed HTTP methods
         credentials: true, // Enable sending cookies or authentication headers
     },
-    pingTimeout: 60000, // Timeout for inactive connections
-    pingInterval: 25000, // Interval between pings
-    transports: ["websocket", "polling"], // Transport methods
+    transports: ["polling", "websocket"],
+    allowEIO3: true,
+    pingTimeout: 60000,
+    pingInterval: 25000,
+    upgrade: true,
+    allowUpgrades: true,
 })
 
 
