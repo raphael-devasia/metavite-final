@@ -7,6 +7,7 @@ import carrierRoutes from "./routes/carrier.routes"
 import adminRoutes from "./routes/admin.routes"
 import shipperRoutes from "./routes/shipper.routes"
 const morgan = require("morgan")
+import { createProxyMiddleware } from "http-proxy-middleware"
 
 const detect = require("detect-port")
 
@@ -46,6 +47,14 @@ app.use((req: Request, res: Response, next) => {
 app.use(bodyParser.json())
 
 //THIS SECTION IS FOR THE ROUTES RELATED TO DIFFERENT SERVICES
+app.use(
+    "/chat/socket.io",
+    createProxyMiddleware({
+        target: "http://chat-service:3000",
+        ws: true, // This ensures WebSocket connections are handled properly
+        changeOrigin: true,
+    })
+)
 app.use(authRoutes)
 app.use(carrierRoutes)
 app.use(adminRoutes)
