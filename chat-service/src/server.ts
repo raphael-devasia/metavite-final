@@ -37,15 +37,12 @@ app.use(
 // Explicitly handle preflight OPTIONS requests
 app.options("*", cors())
 
-app.use("/socketiochat", (req, res, next) => {
-    console.log("Incoming request:", req.path)
-    next()
-})
+
 
 const server = http.createServer(app) 
 // Initialize Socket.IO server with CORS
 const io = new Server(server, {
-    path: "/socket.io",
+    path: "/chat/socket.io",
     cors: {
         origin: [
             "https://metavite.vercel.app", // Allow Vercel front-end
@@ -54,17 +51,9 @@ const io = new Server(server, {
         ], // Allowed origins
         methods: ["GET", "POST", "OPTIONS"], // Allowed HTTP methods
         credentials: true, // Enable sending cookies or authentication headers
-        allowedHeaders: [
-            "Content-Type",
-            "Authorization",
-            "X-Requested-With",
-            "Accept",
-        ],
-    },
-    transports: ["polling", "websocket"],
-    allowEIO3: true,
-    pingTimeout: 60000,
-    pingInterval: 25000,
+        
+    }
+    
 })
 
 

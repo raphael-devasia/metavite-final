@@ -40,13 +40,13 @@ spec:
       #       name: load-service
       #       port:
       #         number: 5001
-      - path: /socketiochat
-        pathType: Prefix
-        backend:
-          service:
-            name: chat-service
-            port:
-              number: 3000        
+      # - path: /socketiochat
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: chat-service
+      #       port:
+      #         number: 3000        
   tls:
   - hosts:
     - metavite.ddns.net
